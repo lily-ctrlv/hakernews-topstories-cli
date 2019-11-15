@@ -7,8 +7,6 @@ require 'json'
 require 'uri'
 require 'open-uri'
 
-
-
 # adding the commands for CLI
 options = {}
 
@@ -46,8 +44,11 @@ top_stories = http.request(request)
 
 if options[:n].positive? && options[:n] <= 100
 
+  STDOUT.puts(  File.read("banner.txt"))
+  STDOUT.puts("Here's today's top stories:")
+
   # cut JSON array by N requested by user
-  final_hash = {}
+  output = []
   rank = 0
   top_stories = JSON.parse(top_stories.read_body).first(options[:n])
 
@@ -62,11 +63,10 @@ if options[:n].positive? && options[:n] <= 100
     request = Net::HTTP::Get.new(url)
 
     story = JSON.parse(http.request(request).read_body)
-    final_hash[story['id']] = { title: story['title'], url: story['url'], author: story['by'], points: story['score'], comments: story['descendants'], rank: rank += 1 }
-
-    # print each story "pretty" for readability
-    STDOUT.puts(JSON.pretty_generate(final_hash[story['id']]))
+    story['id'] = { title: story['title'], url: story['url'], author: story['by'], points: story['score'], comments: story['descendants'], rank: rank += 1 }
+    output << story['id']
   end
+    STDOUT.puts(JSON.pretty_generate(output))
 
 else # output error to terminal if INT not within range
   STDERR.puts('Error: NUMBER needs to be between 0 and 100')
