@@ -63,11 +63,11 @@ if options[:n].positive? && options[:n] <= 100
     request = Net::HTTP::Get.new(url)
 
     story = JSON.parse(http.request(request).read_body)
-    story['id'] = { title: story['title'], url: story['url'], author: story['by'], points: story['score'], comments: story['descendants'], rank: rank += 1 }
+    story['id'] = { title: story['title'], uri: story['url'], author: story['by'], points: story['score'], comments: story['descendants'], rank: rank += 1 }
     output << story['id']
   end
     STDOUT.puts(JSON.pretty_generate(output))
 
 else # output error to terminal if INT not within range
-  STDERR.puts('Error: NUMBER needs to be between 0 and 100')
+  STDERR.puts('Error: NUMBER needs to be between 1 and 100')
 end
