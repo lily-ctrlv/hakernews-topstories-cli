@@ -1,11 +1,10 @@
-# frozen_string_literal: true
+#!/usr/bin/ruby
+
 
 # accessing necessary libraries
 require 'optparse'
 require 'net/http'
 require 'json'
-require 'uri'
-require 'open-uri'
 
 # adding the commands for CLI
 options = {}
